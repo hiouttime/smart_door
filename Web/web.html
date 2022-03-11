@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="renderer" content="webkit" />
+		<meta name="force-rendering" content="webkit" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<link rel="stylesheet" href="https://statict.cn/libs/mdui/css/mdui.min.css">
+		<title>
+			Hello, world!
+		</title>
+		<style>
+			.mdui-container{ padding-top: 1rem; display: flex; flex-wrap: wrap;} .mdui-card{
+			border-radius: 8px; margin: 10px; flex: auto;} .mdui-card-header .mdui-icon{
+			font-size: 40px; } .mdui-card .mdui-card-actions{font-size: 0.8rem; margin-left:
+			1rem; } .card{ border-radius: 8px; border: 3px dashed; height: 160px; }
+			.card p{ margin-top: 0em; line-height: 160px; text-align: center; font-size: 1rem;} @media
+			(max-width: 1024px) { }
+		</style>
+	</head>
+	<body class="mdui-theme-layout-auto">
+		<div class="mdui-appbar">
+			<div class="mdui-toolbar mdui-color-theme">
+				<a href="javascript:;" class="mdui-typo-headline">
+					门禁系统
+				</a>
+				<a href="javascript:;" class="mdui-typo-title">
+					首页
+				</a>
+				<div class="mdui-toolbar-spacer">
+				</div>
+			</div>
+		</div>
+		<div class="mdui-container">
+			<div class="mdui-card">
+				<div class="mdui-card-header">
+					<i class="mdui-card-header-avatar mdui-icon material-icons">
+						assignment
+					</i>
+					<div class="mdui-card-header-title">
+						日志
+					</div>
+					<div class="mdui-card-header-subtitle">
+						近期开门日志
+					</div>
+				</div>
+				<div class="mdui-card-content">
+					<ul class="mdui-list mdui-list-dense">
+						{{log}}
+					</ul>
+				</div>
+			</div>
+			<div class="mdui-card">
+				<div class="mdui-card-header">
+					<i class="mdui-card-header-avatar mdui-icon material-icons">
+						account_box
+					</i>
+					<div class="mdui-card-header-title">
+						卡片管理
+					</div>
+					<div class="mdui-card-header-subtitle">
+						所有有权限开门的用户
+					</div>
+				</div>
+				<div class="mdui-card-content">
+					<ul class="mdui-list">
+						{{card}}
+					</ul>
+				</div>
+				<div class="mdui-card-actions">
+					<p>
+						已录入卡片：{{card_count}} 张
+					</p>
+				</div>
+			</div>
+			<div class="mdui-card">
+				<div class="mdui-card-header">
+					<i class="mdui-card-header-avatar mdui-icon material-icons">
+						add_box
+					</i>
+					<div class="mdui-card-header-title">
+						新增卡片
+					</div>
+					<div class="mdui-card-header-subtitle">
+						新增卡片到系统
+					</div>
+				</div>
+				<div class="mdui-card-content">
+					<div class="card">
+						<p>
+							请扫描卡片
+						</p>
+						<input class="mdui-textfield-input mdui-hidden" name="uid" type="text" />
+					</div>
+					<div class="mdui-textfield mdui-textfield-floating-label">
+						<i class="mdui-icon material-icons">
+							account_circle
+						</i>
+						<label class="mdui-textfield-label">
+							卡片名称
+						</label>
+						<input class="mdui-textfield-input" name="name" type="text" />
+					</div>
+				</div>
+				<div class="mdui-card-actions">
+					<button class="mdui-btn mdui-ripple" onclick="add()">添加</button>
+				</div>
+			</div>
+		</div>
+		<script type='text/javascript' src="https://statict.cn/libs/mdui/js/mdui.min.js"></script>
+		<script>
+		    var $ = mdui.$;
+		    $(function () { read() });
+		    $.ajaxSetup({
+                method: 'GET',
+                timeout: 3000,
+            });
+		    function read(){
+                $.ajax({
+                    data: {do: 'read'},
+                    success: function (data) {
+                        if(data !== ""){
+                            $(".card p").text("卡片UID："+data);
+                            $("input[name='uid']").val(data);
+                        }
+                    }
+                });
+                setTimeout(function() {read()},1500)  
+            }
+            function add(){
+               $.ajax({
+                    data: {do: 'add',id: $("input[name='uid']").val() ,name: $("input[name='name']").val()},
+                    success: function (data) {
+                        if(data == "success")
+                            mdui.snackbar({
+                                message: '成功',
+                                position: 'right-bottom',
+                            });
+                    }
+                }); 
+            }
+		</script>
+	</body>
+</html>
