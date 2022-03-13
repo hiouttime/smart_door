@@ -7,9 +7,9 @@
 #define SERVO_PIN       16          // 舵机
 #define START           175         // 舵机起始位置
 #define END             35          // 舵机转动位置
-#define STASSID ""
-#define STAPSK  ""
-#define AUTH ""       // 认证服务器地址
+#define STASSID "TP_Fuck"
+#define STAPSK  "521network"
+#define AUTH "192.168.31.100"       // 认证服务器地址
 
 const char* ssid = STASSID;
 const char* password = STAPSK;
@@ -109,8 +109,8 @@ void loop() {
     }
   }
   http.stop();
-  digitalWrite(RST_PIN, HIGH);
   delay(1000);
+  mfrc522.PCD_Init();
   return;
 }
 
