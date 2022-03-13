@@ -109,6 +109,7 @@ void loop() {
     }
   }
   http.stop();
+  digitalWrite(RST_PIN, HIGH);
   delay(1000);
   return;
 }
